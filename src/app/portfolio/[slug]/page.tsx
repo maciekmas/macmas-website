@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 import { PortableText } from '@portabletext/react';
 import { notFound } from 'next/navigation';
+import ProjectGallery from '@/components/ProjectGallery';
 
 export const revalidate = 60;
 
@@ -47,42 +48,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <main className={styles.main} style={{ paddingTop: '150px' }}>
       <div className="container">
-        <div className={styles.projectHeader}>
-          <h1 className={styles.projectTitle}>{project.title}</h1>
-          <div className={styles.metaInfo}>
-            <div className={styles.metaItem}>
-              <span>Technologia:</span> {frameworkLabel}
-            </div>
-            {project.url && (
-              <div className={styles.metaItem}>
-                <span>URL:</span> <a href={project.url} target="_blank" rel="noopener noreferrer">{new URL(project.url).hostname}</a>
-              </div>
-            )}
-          </div>
-        </div>
-
         <div className={styles.projectContent}>
           {/* Lewa kolumna: Zrzut ekranu lub Galeria */}
           <div>
             {project.gallery && project.gallery.filter((img: any) => img?.asset?._ref).length > 0 ? (
-              <div className={styles.gallery}>
-                {project.gallery.filter((img: any) => img?.asset?._ref).map((img: any, idx: number) => (
-                  <a 
-                    key={idx} 
-                    href={urlFor(img).url()} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={styles.galleryItem}
-                    title="Kliknij, aby powiększyć (Popup)"
-                  >
-                    <img 
-                      src={urlFor(img).width(1200).url()} 
-                      alt={`Zrzut ekranu ${idx + 1}`} 
-                      className={styles.galleryImage} 
-                    />
-                  </a>
-                ))}
-              </div>
+              <ProjectGallery gallery={project.gallery.filter((img: any) => img?.asset?._ref)} />
             ) : project.coverImage?.asset?._ref ? (
               <div className={styles.screenshotContainer} title="Najedź myszką, aby przescrollować stronę w dół">
                 <img 
@@ -98,8 +68,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             )}
           </div>
 
-          {/* Prawa kolumna: Opis i Link */}
+          {/* Prawa kolumna: Tytuł, Info i Opis */}
           <div className={styles.sidebar}>
+            <nav className={styles.breadcrumbs}>
+              <Link href="/portfolio">← Wróć do Portfolio</Link>
+            </nav>
+
+            <div className={styles.sidebarHeader}>
+              <h1 className={styles.projectTitle}>{project.title}</h1>
+              <div className={styles.metaInfo}>
+                <div className={styles.metaItem}>
+                  <span>Technologia:</span> {frameworkLabel}
+                </div>
+                {project.url && (
+                  <div className={styles.metaItem}>
+                    <span>URL:</span> <a href={project.url} target="_blank" rel="noopener noreferrer">{new URL(project.url).hostname}</a>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {project.description && (
               <div className={styles.description}>
                 <PortableText value={project.description} />
@@ -123,13 +111,6 @@ function MockProjectPage({ slug }: { slug: string }) {
   return (
     <main className={styles.main} style={{ paddingTop: '150px' }}>
       <div className="container">
-        <div className={styles.projectHeader}>
-          <h1 className={styles.projectTitle}>Projekt: {slug}</h1>
-          <div className={styles.metaInfo}>
-            <div className={styles.metaItem}><span>Technologia:</span> WordPress</div>
-          </div>
-        </div>
-
         <div className={styles.projectContent}>
           <div className={styles.screenshotContainer}>
              <div style={{height: '2000px', background: 'linear-gradient(#111, #333)', display: 'flex', justifyContent: 'center', paddingTop: '100px', color: '#666'}}>
@@ -138,6 +119,17 @@ function MockProjectPage({ slug }: { slug: string }) {
           </div>
 
           <div className={styles.sidebar}>
+            <nav className={styles.breadcrumbs}>
+              <Link href="/portfolio">← Wróć do Portfolio</Link>
+            </nav>
+
+            <div className={styles.sidebarHeader}>
+              <h1 className={styles.projectTitle}>Projekt: {slug}</h1>
+              <div className={styles.metaInfo}>
+                <div className={styles.metaItem}><span>Technologia:</span> WordPress</div>
+              </div>
+            </div>
+
             <div className={styles.description}>
               <p>Przykładowy opis projektu zanim zostanie dodany w Sanity. Ten projekt używa technologii WordPress i został stworzony z dbałością o każdy detal.</p>
             </div>

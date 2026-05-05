@@ -183,13 +183,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div className="container">
-          <p>&copy; {new Date().getFullYear()} {footerText}</p>
-        </div>
-      </footer>
     </main>
   );
 }

@@ -433,4 +433,19 @@
   .navLinks {
     display: none;
   }
+  .contactLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .contactFormSide {
+    padding: 1.5rem;
+  }
+  .contactText {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .contactItem {
+    font-size: 1rem;
+  }
 }

@@ -21,6 +21,35 @@ export const settingsType = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'headingFont',
+      title: 'Font Nagłówków',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Syne (Modern/Art)', value: 'Syne' },
+          { title: 'Outfit (Clean/Tech)', value: 'Outfit' },
+          { title: 'Montserrat (Classic/Strong)', value: 'Montserrat' },
+          { title: 'Playfair Display (Elegant/Serif)', value: 'Playfair_Display' },
+          { title: 'Inter (Standard/Professional)', value: 'Inter' },
+        ],
+      },
+      initialValue: 'Syne',
+    }),
+    defineField({
+      name: 'bodyFont',
+      title: 'Font Tekstu Głównego',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Inter (Clean)', value: 'Inter' },
+          { title: 'Outfit (Modern)', value: 'Outfit' },
+          { title: 'Roboto (Neutral)', value: 'Roboto' },
+          { title: 'Open Sans', value: 'Open_Sans' },
+        ],
+      },
+      initialValue: 'Inter',
+    }),
+    defineField({
       name: 'email',
       title: 'Adres E-mail',
       type: 'string',

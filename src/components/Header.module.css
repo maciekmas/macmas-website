@@ -61,6 +61,8 @@
   cursor: pointer;
   padding: 0;
   z-index: 1001;
+  flex-shrink: 0;
+  min-width: 28px;
 }
 
 .hamburger span {

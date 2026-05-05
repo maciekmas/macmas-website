@@ -23,7 +23,10 @@ const SETTINGS_QUERY = `*[_type == "settings"][0] {
   email,
   linkedin,
   contactDescription,
-  footerText
+  footerText,
+  heroTitle,
+  heroTitleGradient,
+  heroSubtitle
 }`;
 
 export const revalidate = 60; // Revalidate every 60 seconds
@@ -40,6 +43,10 @@ export default async function Home() {
   const linkedin = settings?.linkedin || "https://www.linkedin.com/in/maciek-maslowski/";
   const contactDesc = settings?.contactDescription || "Szukasz wsparcia przy swojej stronie internetowej? Potrzebujesz modyfikacji, naprawy po włamaniu lub stałej obsługi? Napisz do mnie.";
   const footerText = settings?.footerText || "MACMAS Maciek Masłowski. Wszelkie prawa zastrzeżone.";
+  
+  const heroTitle = settings?.heroTitle || "Web Designer";
+  const heroTitleGradient = settings?.heroTitleGradient || "& Art Director";
+  const heroSubtitle = settings?.heroSubtitle || "Tworzę, zabezpieczam i rozwijam strony internetowe z myślą o najwyższej jakości.";
 
   const services = servicesData.length > 0 ? servicesData : [
     {
@@ -81,11 +88,11 @@ export default async function Home() {
         </div>
         <div className={`container ${styles.heroContent}`}>
           <h1 className={styles.heroTitle}>
-            Web Designer <br />
-            <span className="text-gradient">& Art Director</span>
+            {heroTitle} <br />
+            <span className="text-gradient">{heroTitleGradient}</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            Tworzę, zabezpieczam i rozwijam strony internetowe z myślą o najwyższej jakości.
+            {heroSubtitle}
           </p>
           <div className={styles.heroButtons}>
             <a href="#uslugi" className="btn">Zobacz usługi</a>

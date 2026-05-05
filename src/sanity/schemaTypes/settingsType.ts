@@ -6,6 +6,21 @@ export const settingsType = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'heroTitle',
+      title: 'Nagłówek Hero (Biały tekst)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'heroTitleGradient',
+      title: 'Nagłówek Hero (Tekst z gradientem)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'heroSubtitle',
+      title: 'Podtytuł Hero',
+      type: 'text',
+    }),
+    defineField({
       name: 'email',
       title: 'Adres E-mail',
       type: 'string',

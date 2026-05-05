@@ -27,17 +27,6 @@ export default async function PortfolioPage() {
 
   return (
     <main className={styles.main}>
-      <header className={`${styles.header} ${styles.headerScrolled}`}>
-        <div className={`container ${styles.nav}`}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo.png" alt="MACMAS Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
-          </Link>
-          <nav className={styles.navLinks}>
-            <Link href="/" className={styles.navLink}>Wróć na stronę główną</Link>
-          </nav>
-        </div>
-      </header>
-
       <section className={styles.portfolio} style={{ paddingTop: '150px', minHeight: '100vh' }}>
         <div className="container">
           <h2>Wszystkie <span>Projekty</span></h2>
@@ -48,7 +37,7 @@ export default async function PortfolioPage() {
           <div className={styles.portfolioGrid}>
             {portfolio.map((item: any) => (
               <Link href={`/portfolio/${item.slug?.current || ''}`} key={item._id} className={styles.portfolioCard}>
-                {item.coverImage ? (
+                {item.coverImage?.asset?._ref ? (
                   <img 
                     src={urlFor(item.coverImage).width(800).height(450).url()} 
                     alt={item.title} 

@@ -18,15 +18,28 @@ const PORTFOLIO_QUERY = `*[_type == "project"] | order(order asc)[0...4] {
   coverImage
 }`;
 
+const SETTINGS_QUERY = `*[_type == "settings"][0] {
+  email,
+  linkedin,
+  contactDescription,
+  footerText
+}`;
+
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function Home() {
-  const [servicesData, portfolioData] = await Promise.all([
+  const [servicesData, portfolioData, settings] = await Promise.all([
     client.fetch(SERVICES_QUERY),
-    client.fetch(PORTFOLIO_QUERY)
+    client.fetch(PORTFOLIO_QUERY),
+    client.fetch(SETTINGS_QUERY)
   ]);
 
-  // Fallback to static mock data if CMS is empty
+  // Fallback data
+  const email = settings?.email || "design@macmas.pl";
+  const linkedin = settings?.linkedin || "https://www.linkedin.com/in/maciek-maslowski/";
+  const contactDesc = settings?.contactDescription || "Szukasz wsparcia przy swojej stronie internetowej? Potrzebujesz modyfikacji, naprawy po włamaniu lub stałej obsługi? Napisz do mnie.";
+  const footerText = settings?.footerText || "MACMAS Maciek Masłowski. Wszelkie prawa zastrzeżone.";
+
   const services = servicesData.length > 0 ? servicesData : [
     {
       _id: '1',
@@ -57,18 +70,6 @@ export default async function Home() {
 
   return (
     <main className={styles.main}>
-      {/* Header */}
-      <header className={`${styles.header} ${styles.headerScrolled}`}>
-        <div className={`container ${styles.nav}`}>
-          <img src="/logo.png" alt="MACMAS Logo" style={{ height: '40px', width: 'auto' }} />
-          <nav className={styles.navLinks}>
-            <a href="#uslugi" className={styles.navLink}>Usługi</a>
-            <a href="#portfolio" className={styles.navLink}>Portfolio</a>
-            <a href="#kontakt" className={styles.navLink}>Kontakt</a>
-          </nav>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroBackground}>
@@ -115,7 +116,7 @@ export default async function Home() {
           <div className={styles.portfolioGrid}>
             {portfolio.map((item: any) => (
               <Link href={`/portfolio/${item.slug?.current || ''}`} key={item._id} className={styles.portfolioCard}>
-                {item.coverImage ? (
+                {item.coverImage?.asset?._ref ? (
                   <img 
                     src={urlFor(item.coverImage).width(800).height(450).url()} 
                     alt={item.title} 
@@ -153,19 +154,36 @@ export default async function Home() {
       <section id="kontakt" className={styles.contact}>
         <div className="container">
           <h2>Bądźmy w <span>Kontakcie</span></h2>
-          <div className={styles.contactContent}>
-            <p className={styles.contactText}>
-              Szukasz wsparcia przy swojej stronie internetowej? Potrzebujesz modyfikacji, naprawy po włamaniu lub stałej obsługi? Napisz do mnie.
-            </p>
-            <div className={styles.contactInfo}>
-              <a href="mailto:design@macmas.pl" className={`${styles.contactItem} glass`} style={{ padding: '1.5rem', borderRadius: '12px' }}>
-                <span className={styles.contactIcon}>✉️</span>
-                <span>design@macmas.pl</span>
-              </a>
-              <a href="https://www.linkedin.com/in/maciek-mas%C5%82owski/" target="_blank" rel="noopener noreferrer" className={`${styles.contactItem} glass`} style={{ padding: '1.5rem', borderRadius: '12px' }}>
-                <span className={styles.contactIcon}>🔗</span>
-                <span>LinkedIn / Maciek Masłowski</span>
-              </a>
+          <div className={styles.contactLayout}>
+            <div className={styles.contactInfoSide}>
+              <p className={styles.contactText}>{contactDesc}</p>
+              <div className={styles.contactInfo}>
+                <a href={`mailto:${email}`} className={`${styles.contactItem} glass`}>
+                  <span className={styles.contactIcon}>✉️</span>
+                  <span>{email}</span>
+                </a>
+                <a href={linkedin} target="_blank" rel="noopener noreferrer" className={`${styles.contactItem} glass`}>
+                  <span className={styles.contactIcon}>🔗</span>
+                  <span>LinkedIn / Maciek Masłowski</span>
+                </a>
+              </div>
+            </div>
+
+            <div className={`${styles.contactFormSide} glass`}>
+              <form action="https://formspree.io/f/YOUR_ID" method="POST" className={styles.form}>
+                <div className={styles.formGroup}>
+                  <input type="text" name="name" placeholder="Imię i nazwisko" required />
+                </div>
+                <div className={styles.formGroup}>
+                  <input type="email" name="email" placeholder="Twój e-mail" required />
+                </div>
+                <div className={styles.formGroup}>
+                  <textarea name="message" placeholder="W czym mogę pomóc?" rows={5} required></textarea>
+                </div>
+                {/* Honeypot field for security */}
+                <input type="text" name="_gotcha" style={{ display: 'none' }} />
+                <button type="submit" className="btn">Wyślij wiadomość</button>
+              </form>
             </div>
           </div>
         </div>
@@ -174,7 +192,7 @@ export default async function Home() {
       {/* Footer */}
       <footer className={styles.footer}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} MACMAS Maciek Masłowski. Wszelkie prawa zastrzeżone.</p>
+          <p>&copy; {new Date().getFullYear()} {footerText}</p>
         </div>
       </footer>
     </main>

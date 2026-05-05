@@ -7,7 +7,9 @@ import { notFound } from 'next/navigation';
 
 export const revalidate = 60;
 
-export default async function ProjectPage({ params }: { params: { slug: string } }) {
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  
   const query = `*[_type == "project" && slug.current == $slug][0] {
     _id,
     title,
@@ -18,12 +20,12 @@ export default async function ProjectPage({ params }: { params: { slug: string }
     description
   }`;
 
-  const project = await client.fetch(query, { slug: params.slug });
+  const project = await client.fetch(query, { slug });
 
   if (!project) {
     // If we're testing with mock slugs that don't exist in Sanity yet:
-    if (['zestwaterforlife', 'ptpiree', 'nierafinowane', 'motobirds'].includes(params.slug)) {
-      return <MockProjectPage slug={params.slug} />;
+    if (['zestwaterforlife', 'ptpiree', 'nierafinowane', 'motobirds'].includes(slug)) {
+      return <MockProjectPage slug={slug} />;
     }
     notFound();
   }
@@ -43,18 +45,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
   const frameworkLabel = project.framework ? frameworkNames[project.framework] || project.framework : 'Inne / Nie podano';
 
   return (
-    <main className={styles.main}>
-      <header className={styles.header}>
-        <div className={`container ${styles.nav}`}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo.png" alt="MACMAS Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
-          </Link>
-          <nav>
-            <Link href="/portfolio" className={styles.navLink}>Wróć do Portfolio</Link>
-          </nav>
-        </div>
-      </header>
-
+    <main className={styles.main} style={{ paddingTop: '150px' }}>
       <div className="container">
         <div className={styles.projectHeader}>
           <h1 className={styles.projectTitle}>{project.title}</h1>
@@ -73,9 +64,9 @@ export default async function ProjectPage({ params }: { params: { slug: string }
         <div className={styles.projectContent}>
           {/* Lewa kolumna: Zrzut ekranu lub Galeria */}
           <div>
-            {project.gallery && project.gallery.length > 0 ? (
+            {project.gallery && project.gallery.filter((img: any) => img?.asset?._ref).length > 0 ? (
               <div className={styles.gallery}>
-                {project.gallery.map((img: any, idx: number) => (
+                {project.gallery.filter((img: any) => img?.asset?._ref).map((img: any, idx: number) => (
                   <a 
                     key={idx} 
                     href={urlFor(img).url()} 
@@ -92,7 +83,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
                   </a>
                 ))}
               </div>
-            ) : project.coverImage ? (
+            ) : project.coverImage?.asset?._ref ? (
               <div className={styles.screenshotContainer} title="Najedź myszką, aby przescrollować stronę w dół">
                 <img 
                   src={urlFor(project.coverImage).width(1200).url()} 
@@ -130,18 +121,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
 // Mock fallback na czas zanim klient uzupełni Sanity
 function MockProjectPage({ slug }: { slug: string }) {
   return (
-    <main className={styles.main}>
-      <header className={styles.header}>
-        <div className={`container ${styles.nav}`}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo.png" alt="MACMAS Logo" style={{ height: '40px', width: 'auto', display: 'block' }} />
-          </Link>
-          <nav>
-            <Link href="/portfolio" className={styles.navLink}>Wróć do Portfolio</Link>
-          </nav>
-        </div>
-      </header>
-
+    <main className={styles.main} style={{ paddingTop: '150px' }}>
       <div className="container">
         <div className={styles.projectHeader}>
           <h1 className={styles.projectTitle}>Projekt: {slug}</h1>

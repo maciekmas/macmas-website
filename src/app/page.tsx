@@ -2,6 +2,7 @@ import styles from './page.module.css';
 import Link from 'next/link';
 import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
+import ContactForm from '@/components/ContactForm';
 
 // GROQ queries
 const SERVICES_QUERY = `*[_type == "service"] | order(order asc) {
@@ -170,20 +171,7 @@ export default async function Home() {
             </div>
 
             <div className={`${styles.contactFormSide} glass`}>
-              <form action="https://formspree.io/f/YOUR_ID" method="POST" className={styles.form}>
-                <div className={styles.formGroup}>
-                  <input type="text" name="name" placeholder="Imię i nazwisko" required />
-                </div>
-                <div className={styles.formGroup}>
-                  <input type="email" name="email" placeholder="Twój e-mail" required />
-                </div>
-                <div className={styles.formGroup}>
-                  <textarea name="message" placeholder="W czym mogę pomóc?" rows={5} required></textarea>
-                </div>
-                {/* Honeypot field for security */}
-                <input type="text" name="_gotcha" style={{ display: 'none' }} />
-                <button type="submit" className="btn">Wyślij wiadomość</button>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </div>

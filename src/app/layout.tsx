@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair-display" });
 const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"], variable: "--font-roboto" });
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
 

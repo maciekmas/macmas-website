@@ -424,6 +424,12 @@
   .heroSubtitle {
     font-size: 1.2rem;
   }
+  .heroButtons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
   .navLinks {
     display: none;
   }

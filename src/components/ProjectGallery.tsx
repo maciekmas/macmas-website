@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { urlFor } from '@/sanity/lib/image';
+import Image from 'next/image';
 import styles from '../app/portfolio/[slug]/project.module.css';
 
 interface ProjectGalleryProps {
@@ -30,10 +31,14 @@ export default function ProjectGallery({ gallery }: ProjectGalleryProps) {
             onClick={() => setSelectedImage(urlFor(img).url())}
             title="Kliknij, aby powiększyć"
           >
-            <img 
+            <Image 
               src={urlFor(img).width(1200).url()} 
               alt={`Zrzut ekranu ${idx + 1}`} 
-              className={styles.galleryImage} 
+              className={styles.galleryImage}
+              width={1200}
+              height={800} // This is just a base height, styles handle it
+              style={{ height: 'auto' }}
+              loading="lazy"
             />
           </div>
         ))}

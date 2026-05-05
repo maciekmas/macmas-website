@@ -1,5 +1,6 @@
 import styles from '../page.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 
@@ -38,10 +39,13 @@ export default async function PortfolioPage() {
             {portfolio.map((item: any) => (
               <Link href={`/portfolio/${item.slug?.current || ''}`} key={item._id} className={styles.portfolioCard}>
                 {item.coverImage?.asset?._ref ? (
-                  <img 
+                  <Image 
                     src={urlFor(item.coverImage).width(800).height(450).url()} 
                     alt={item.title} 
-                    className={styles.portfolioImage} 
+                    className={styles.portfolioImage}
+                    width={800}
+                    height={450}
+                    loading="lazy"
                   />
                 ) : (
                   <div style={{

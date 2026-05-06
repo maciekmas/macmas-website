@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 import ContactForm from '@/components/ContactForm';
+import LucideIcon from '@/components/LucideIcon';
 
 // GROQ queries
 const SERVICES_QUERY = `*[_type == "service"] | order(order asc) {
@@ -54,19 +55,19 @@ export default async function Home() {
       _id: '1',
       title: "Obsługa stron",
       description: "Kompleksowa opieka nad Twoją stroną internetową. Aktualizacje, kopie zapasowe, monitorowanie działania i gwarancja stabilności.",
-      icon: "⚙️"
+      icon: "Settings"
     },
     {
       _id: '2',
       title: "Naprawa po włamaniach",
       description: "Szybkie przywracanie zainfekowanych stron do działania. Czyszczenie złośliwego kodu i wdrażanie zaawansowanych zabezpieczeń.",
-      icon: "🛡️"
+      icon: "ShieldAlert"
     },
     {
       _id: '3',
       title: "Modyfikacje stron",
       description: "Rozbudowa istniejących witryn o nowe funkcjonalności, przebudowa struktury oraz optymalizacja pod kątem UX i wydajności.",
-      icon: "🔧"
+      icon: "Wrench"
     }
   ];
 
@@ -88,16 +89,18 @@ export default async function Home() {
           <div className={`${styles.orb} ${styles.orb3}`}></div>
         </div>
         <div className={`container ${styles.heroContent}`}>
-          <h1 className={styles.heroTitle}>
-            {heroTitle} <br />
-            <span className="text-gradient">{heroTitleGradient}</span>
-          </h1>
-          <p className={styles.heroSubtitle}>
-            {heroSubtitle}
-          </p>
-          <div className={styles.heroButtons}>
-            <a href="#uslugi" className="btn">Zobacz usługi</a>
-            <a href="#portfolio" className="btn btn-outline">Moje portfolio</a>
+          <div className={styles.heroGlass}>
+            <h1 className={styles.heroTitle}>
+              {heroTitle} <br />
+              <span className="text-gradient">{heroTitleGradient}</span>
+            </h1>
+            <p className={styles.heroSubtitle}>
+              {heroSubtitle}
+            </p>
+            <div className={styles.heroButtons}>
+              <a href="#uslugi" className="btn">Zobacz usługi</a>
+              <a href="#portfolio" className="btn btn-outline">Moje portfolio</a>
+            </div>
           </div>
         </div>
       </section>
@@ -109,7 +112,9 @@ export default async function Home() {
           <div className={styles.servicesGrid}>
             {services.map((service: any) => (
               <div key={service._id} className={`${styles.serviceCard} glass`}>
-                <div className={styles.serviceIcon}>{service.icon || '📌'}</div>
+                <div className={styles.serviceIcon}>
+                  <LucideIcon name={service.icon || 'Layout'} size={40} />
+                </div>
                 <h3 className={styles.serviceTitle}>{service.title}</h3>
                 <p className={styles.serviceDesc}>{service.description}</p>
               </div>

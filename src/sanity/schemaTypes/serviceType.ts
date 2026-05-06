@@ -19,7 +19,8 @@ export const serviceType = defineType({
     }),
     defineField({
       name: 'icon',
-      title: 'Ikona (Emoji lub kod)',
+      title: 'Ikona',
+      description: 'Wpisz nazwę ikony z Lucide (np. Settings, Shield, Wrench, Globe, Smartphone, PenTool) lub Emoji.',
       type: 'string',
     }),
     defineField({

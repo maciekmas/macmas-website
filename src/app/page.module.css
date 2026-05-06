@@ -73,6 +73,7 @@
   z-index: -1;
   background-color: var(--color-bg);
   overflow: hidden;
+  isolation: isolate;
 }
 
 .gridOverlay {
@@ -95,6 +96,16 @@
   z-index: 0;
   opacity: 0.5;
   mix-blend-mode: screen;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .orb {
+    filter: blur(60px);
+    opacity: 0.6;
+  }
 }
 
 .orb1 {
